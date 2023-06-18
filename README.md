@@ -7,6 +7,7 @@ stabline(s-**tabline**): A simple bufferline for neovim written in lua. (sry did
 * `vim.opt.laststatus=2` in your init.lua for statusline. (or `3` for global line)
 * `vim.opt.showtabline=2` in your init.lua for bufferline.
 * `vim.opt.termguicolors = true` must be set.
+* [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim/) for git branch
 
 ### Installation
 ```lua

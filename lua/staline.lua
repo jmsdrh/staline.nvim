@@ -16,16 +16,10 @@ local set_stl = function()
     end
 end
 
--- PERF: git command for branch_name according to file location instead of cwd?
+-- use gitsigsns.nvim for git branch info
 local update_branch = function()
-    local cmd = io.popen('git branch --show-current 2>' .. redirect)
-    local branch = ''
-    if cmd ~= nil then
-        branch = cmd:read('*l') or cmd:read('*a')
-        cmd:close()
-    end
-
-    M.Branch_name = branch ~= '' and t.branch_symbol .. branch or ''
+    local branch = vim.g.gitsigns_head
+    return branch ~= nil and t.branch_symbol .. branch or ''
 end
 
 M.setup = function(opts)
@@ -40,7 +34,7 @@ M.setup = function(opts)
         end
     end
 
-    vim.api.nvim_create_autocmd('BufEnter', { callback = update_branch })
+    vim.api.nvim_create_autocmd({ 'VimEnter', 'DirChanged', 'TabEnter', 'BufWinEnter' }, { command = 'redrawstatus!' })
     vim.api.nvim_create_autocmd(
         { 'BufEnter', 'BufReadPost', 'ColorScheme', 'TabEnter', 'TabClosed' },
         { callback = set_stl }
@@ -162,7 +156,7 @@ M.get_statusline = function(status)
     call_highlights(fgColor, bgColor)
 
     M.sections['mode'] = ' ' .. modeIcon .. ' '
-    M.sections['branch'] = ' ' .. (M.Branch_name or '') .. ' '
+    M.sections['branch'] = update_branch()
     M.sections['file_name'] = ' ' .. f_icon .. ' ' .. f_name .. edited .. ' '
     M.sections['file_size'] = ' ' .. size .. 'k '
     M.sections['cool_symbol'] = ' ' .. t.cool_symbol .. ' '
