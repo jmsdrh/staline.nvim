@@ -34,7 +34,7 @@ M.setup = function(opts)
         end
     end
 
-    vim.api.nvim_create_autocmd({ 'VimEnter', 'DirChanged', 'TabEnter', 'BufWinEnter' }, { command = 'redrawstatus!' })
+    vim.api.nvim_create_autocmd({ 'DirChanged', 'BufWinEnter' }, { command = 'redrawstatus!' })
     vim.api.nvim_create_autocmd(
         { 'BufEnter', 'BufReadPost', 'ColorScheme', 'TabEnter', 'TabClosed' },
         { callback = set_stl }
